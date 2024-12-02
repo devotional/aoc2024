@@ -44,15 +44,13 @@ fun main() {
     }
 
     fun part1(input: List<String>): Int {
-        val reports = parseInput(input)
-        return reports.filter {
+        return parseInput(input).filter {
             checkReport(it)
         }.count()
     }
 
     fun part2(input: List<String>): Int {
-        val reports = parseInput(input)
-        return reports.filter {
+        return parseInput(input).filter {
             checkReportWithDampener(it)
         }.count()
     }
