@@ -27,7 +27,7 @@ fun main() {
         return directions.map { direction ->
             var row = rowIndex + direction.first
             var column = columnIndex + direction.second
-            var xmasIndex = 1;
+            var xmasIndex = 1
             while (xmasIndex < xmas.length && getChar(board, row, column) == xmas[xmasIndex]) {
                 xmasIndex++
                 row += direction.first
