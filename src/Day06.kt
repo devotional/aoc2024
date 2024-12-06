@@ -54,11 +54,6 @@ fun main() {
             return Guard(board.map { it.copyOf() }.toTypedArray(), x, y, direction)
         }
 
-        fun print() {
-            println(this)
-            printBoard(board)
-        }
-
         override fun toString(): String {
             return "Guard($x, $y, $direction)"
         }
@@ -115,7 +110,6 @@ fun main() {
                     if (cell == DIRECTIONS[simulatedGuard.direction]) {
                         loops++
                         println("loop $loops at ${simulatedGuard.x} ${simulatedGuard.y}")
-                        //printBoard(simulatedGuard.board)
                         break
                     } else if(cell == ' ') {
                         break
