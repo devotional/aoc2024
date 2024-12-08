@@ -1,5 +1,3 @@
-import jdk.jfr.Frequency
-
 fun main() {
 
     data class Antenna(val position: Point2D, val frequency: Char)
