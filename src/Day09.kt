@@ -147,7 +147,7 @@ fun main() {
                         if(blocks[forward].size == fileSize) {
                             blocks[backward] = Block(fileBlock.position, fileBlock.size, EMPTY_BLOCK)
                             blocks[forward] = Block(blocks[forward].position, fileSize, fileBlock.id)
-                            break;
+                            break
                         } else if(blocks[forward].size > fileSize) {
                             blocks[backward] = Block(fileBlock.position, fileBlock.size, EMPTY_BLOCK)
                             blocks.add(
@@ -156,7 +156,7 @@ fun main() {
                             )
                             blocks[forward] = Block(blocks[forward].position, fileSize, fileBlock.id)
                             backward++
-                            break;
+                            break
                         }
                     }
                 }
