@@ -1,5 +1,3 @@
-import kotlin.math.abs
-
 fun main() {
 
     fun parseInput(input: List<String>) =
