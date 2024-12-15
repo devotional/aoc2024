@@ -73,7 +73,7 @@ fun main() {
             if (isChristmasTree(robots)) {
                 println(time)
                 printMap(robots, xSize, ySize)
-                break;
+                break
             }
             time++
         }
