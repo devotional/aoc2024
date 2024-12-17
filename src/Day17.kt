@@ -86,10 +86,6 @@ fun main() {
         return computer.output.joinToString(",")
     }
 
-    fun part2(input: List<String>): Int {
-        return 0
-    }
-
     Computer(0, 0, 9, 0, listOf(2, 6)).apply {
         run()
         check(b == 1L)
@@ -119,8 +115,8 @@ fun main() {
     fun theProgram(aStart: Long) {
         val output = mutableListOf<Long>()
         var a = aStart
-        var b = 0L
-        var c = 0L
+        var b: Long
+        var c: Long
         while (a != 0L) {
             b = a.and(7L)
             b = b.xor(1L)
@@ -138,10 +134,10 @@ fun main() {
         var bestIndex = 0
         while (true) {
             var index = 0
-            var currentA = (currentPrefix.toString(2) + "01001011011010110111010111101").toLong(2)
+            val currentA = (currentPrefix.toString(2) + "01001011011010110111010111101").toLong(2)
             var a = currentA
-            var b = 0L
-            var c = 0L
+            var b: Long
+            var c: Long
             while (a != 0L && index < target.size) {
                 b = a.and(7L)
                 b = b.xor(1L)
@@ -155,8 +151,6 @@ fun main() {
                 a = a.shr(3)
             }
             if (index > bestIndex) {
-                val b = currentA.toULong().toString(2)
-                //println("New best $currentA ${index + 100} $b")
                 bestIndex = index
             }
             if (a == 0L && index == target.size) {

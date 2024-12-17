@@ -51,7 +51,7 @@ abstract class AlgorithmAStar<V : Graph.Vertex, E : Graph.Edge<V>>(
         val estimatedTotalCost = mutableMapOf(begin to estimatedRoute.cost)
 
         while (openVertices.isNotEmpty()) {
-            val currentPos = openVertices.minBy { estimatedTotalCost.getValue(it) }!!
+            val currentPos = openVertices.minBy { estimatedTotalCost.getValue(it) }
 
             // Check if we have reached the finish
             if (currentPos == end) {
