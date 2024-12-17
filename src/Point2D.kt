@@ -3,7 +3,9 @@ import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
 
-data class Point2D(val x: Long, val y: Long): Comparable<Point2D> {
+data class Point2D(val x: Long, val y: Long): Comparable<Point2D>, Graph.Vertex  {
+
+    constructor(x: Int, y: Int): this(x.toLong(), y.toLong())
 
     override fun compareTo(other: Point2D): Int {
         return if (x == other.x) {
