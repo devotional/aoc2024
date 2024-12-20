@@ -34,33 +34,30 @@ fun main() {
 
     val directions = listOf(Point2D(1, 0), Point2D(0, 1), Point2D(-1, 0), Point2D(0, -1))
 
-    fun findEdges(board: Array<CharArray>): MutableList<Edge> {
-        fun getChar(p: Point2D): Char {
-            return board[p.x.toInt()][p.y.toInt()]
-        }
-
+    fun findEdges(board: CharBoard): MutableList<Edge> {
         val edges = mutableListOf<Edge>()
-        board.forEachIndexed() { x, row ->
-            row.forEachIndexed() { y, c ->
-                if (c == '.' || c == 'S') {
-                    val p = Point2D(x, y)
-                    directions.forEachIndexed { directionIndex, direction ->
-                        var next = p + direction
-                        val exitDirectionIndex = (directionIndex + 1) % 4
-                        val exitDirection = directions[exitDirectionIndex]
-                        if (getChar(p + exitDirection) == '.') {
-                            edges.add(Edge(Vertex(p, directionIndex), Vertex(p, exitDirectionIndex)))
-                        }
-                        if (getChar(p - exitDirection) == '.') {
-                            edges.add(Edge(Vertex(p, directionIndex), Vertex(p, (exitDirectionIndex + 2) % 4)))
-                        }
-                        while (getChar(next) == '.' && getChar(next + exitDirection) == '#' && getChar(next - exitDirection) == '#') {
-                            next += direction
-                        }
-                        if (getChar(next) == '.' || getChar(next) == 'E') {
-                            val edge = Edge(Vertex(p, directionIndex), Vertex(next, directionIndex))
-                            edges.add(edge)
-                        }
+        board.forEachIndexed { x, y, c ->
+            if (".S".contains(c)) {
+                val p = Point2D(x, y)
+                directions.forEachIndexed { directionIndex, direction ->
+                    var next = p + direction
+                    val exitDirectionIndex = (directionIndex + 1) % 4
+                    val exitDirection = directions[exitDirectionIndex]
+                    if (board[p + exitDirection] == '.') {
+                        edges.add(Edge(Vertex(p, directionIndex), Vertex(p, exitDirectionIndex)))
+                    }
+                    if (board[p - exitDirection] == '.') {
+                        edges.add(Edge(Vertex(p, directionIndex), Vertex(p, (exitDirectionIndex + 2) % 4)))
+                    }
+                    while (board[next] == '.' &&
+                        board[next + exitDirection] == '#' &&
+                        board[next - exitDirection] == '#'
+                    ) {
+                        next += direction
+                    }
+                    if (".E".contains(board[next])) {
+                        val edge = Edge(Vertex(p, directionIndex), Vertex(next, directionIndex))
+                        edges.add(edge)
                     }
                 }
             }
@@ -69,36 +66,20 @@ fun main() {
     }
 
     fun part1(input: List<String>, finalDirection: Int): Int {
-        val board = input.map { it.toCharArray() }.toTypedArray()
-        fun findCoordinates(c: Char): Point2D {
-            val x = board.indices.first { x -> board[x].any { it == c } }
-            val y = board[x].indices.first { y -> board[x][y] == c }
-            return Point2D(x.toLong(), y.toLong())
-        }
-
+        val board = CharBoard(input)
         val edges = findEdges(board)
-        val start = Vertex(findCoordinates('S'), 1)
-        val end = Vertex(findCoordinates('E'), finalDirection)
+        val start = Vertex(board.findCoordinates('S')[0], 1)
+        val end = Vertex(board.findCoordinates('E')[0], finalDirection)
         val graph = AStar(edges)
         val result = graph.findPath(start, end)
         return result.second.toInt()
     }
 
-    fun printBoard(board: Array<CharArray>) {
-        board.forEach { println(it.joinToString("")) }
-    }
-
     fun part2(input: List<String>, minimalCost: Int, finalDirection: Int): Int {
-        val board = input.map { it.toCharArray() }.toTypedArray()
-        fun findCoordinates(c: Char): Point2D {
-            val x = board.indices.first { x -> board[x].any { it == c } }
-            val y = board[x].indices.first { y -> board[x][y] == c }
-            return Point2D(x.toLong(), y.toLong())
-        }
-
+        val board = CharBoard(input)
         val edges = findEdges(board)
-        val start = Vertex(findCoordinates('S'), 1)
-        val end = Vertex(findCoordinates('E'), finalDirection)
+        val start = Vertex(board.findCoordinates('S')[0], 1)
+        val end = Vertex(board.findCoordinates('E')[0], finalDirection)
         val cache = mutableMapOf<Vertex, Int>()
         fun explore(path: List<Vertex>, vertex: Vertex, cost: Int): Boolean {
             if (cost > minimalCost) {
@@ -120,7 +101,7 @@ fun main() {
                     var p = it.a.point
                     val d = directions[it.a.direction]
                     while (p != it.b.point) {
-                        board[p.x.toInt()][p.y.toInt()] = 'O'
+                        board[p] = 'O'
                         p += d
                     }
                     true
@@ -128,9 +109,7 @@ fun main() {
             }.isNotEmpty()
         }
         explore(listOf(), start, 0)
-        return board.sumOf {
-            it.count { c -> c == 'O' }
-        } + 1
+        return board.sumOf { c -> if(c == 'O') 1 else 0 } + 1
     }
 
     val testInput = readInput("Day16_test")
