@@ -1,4 +1,4 @@
-class CharBoard(val rows: Int, val columns: Int, init: (Int, Int) -> Char = { _, _ -> '.' }) {
+open class CharBoard(val rows: Int, val columns: Int, init: (Int, Int) -> Char = { _, _ -> '.' }) {
 
     private val board = Array(rows) { x -> Array(columns) { y -> init(x, y) } }
 
